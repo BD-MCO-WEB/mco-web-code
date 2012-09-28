@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>点击态demo</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <style type="text/css">
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,textarea,select,optgroup,option,fieldset,legend,p,blockquote,th,td {margin:0;padding:0;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+        em{font-style: normal;}
+        html,body{height:100%;-webkit-text-size-adjust:none;text-size-adjust:none;}
+        .aaa{width:80px;height:20px;background-color:#f00;margin:20px;padding:10px;}
+		.clickstat{background-color:#ff0;}
+		.clickstatbbb{background-color:#0ff;}
+    </style>
+</head>
+<body>
+<div class="aaa" data-ac="clickstat">点击我试试</div>
+
+<div class="aaa" data-ac="clickstatbbb">点击我试试</div>
+<script type="text/javascript" src="http://m.baidu.com/static/js/zepto-event-ajax.js"></script>
+<script type="text/javascript">
+/**点击态**/
+(function($) {
+    var isAndroid = /Android/.test(navigator.userAgent), klass, movecount, target;
+    function parentIfText(node) {
+        return 'tagName' in node ? node : node.parentNode;
+    }
+    function disactive() {
+        target && target.removeClass(klass);
+        target = null;
+    }
+    $(document).ready(function() {
+        $(document.body).bind('touchstart',
+            function(e) {
+                disactive();
+                var el = parentIfText(e.touches[0].target);
+                klass = el.getAttribute('data-ac');
+                while (el && !klass) {
+                    el = el.parentNode;
+                    if (el === document.body || el === document) return;
+                    klass = el.getAttribute('data-ac');
+                }
+                movecount = 0;
+                target = $(el).addClass(klass);
+                setTimeout(disactive, 500);
+            }).bind('touchmove',
+            function(e) {
+                if (target) {
+                    isAndroid ? movecount++ > 0 && disactive() : disactive();
+                }
+            }).bind('touchend', function(e) {
+                disactive();
+        })
+    })
+})(Zepto);
+</script>
+</body>
+</html>
