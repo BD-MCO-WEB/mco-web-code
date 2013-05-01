@@ -1,5 +1,32 @@
 太多描述不严谨的解释，他们会造成理解上的误导。
 
+如何问问题？问合适的问题可以高效，直指核心！
+
 bin/php		php.ini
 bin/php-cgi	fastcgi_params
 sbin/php-fpm	php-fpm.conf
+
+fastcgi_param: 参考文档
+http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_param
+
+****** 搭建nginx和fastcgi php
+nginx nginx.conf fastcgi.conf 
+php  php-fpm php-fpm.conf  php-fpm -D 
+
+****** cgi.fix_phpinfo
+PATH_INFO：脚本可以由他们的虚拟路径名来访问，在这个路径的末尾附带额外的信息(即PHP_INFO)。
+
+http://localhost:8080/index.php为例：
+PATH_TRANSLATED:PATH_INFO的转换版本
+  ["PATH_TRANSLATED"]=> string(34) "/usr/local/Cellar/nginx/1.4.0/html" 
+SCRIPT_NAME ：将要执行的脚本的一个虚拟路径.
+  ["SCRIPT_NAME"]=> string(10) "/index.php"
+SCRIPT_FILENAME:
+  ["SCRIPT_FILENAME"]=> string(44) "/usr/local/Cellar/nginx/1.4.0/html/index.php"
+QUERY_STRING ：在引用脚本的URL中紧跟在？之后的信息.
+  
+
+****** Grok:神交 
+
+
+
