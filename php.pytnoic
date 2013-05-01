@@ -1,3 +1,5 @@
+太多描述不严谨的解释，他们会造成理解上的误导。
+
 bin/php		php.ini
 bin/php-cgi	fastcgi_params
 sbin/php-fpm	php-fpm.conf
