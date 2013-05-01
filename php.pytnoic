@@ -1,0 +1,3 @@
+bin/php		php.ini
+bin/php-cgi	fastcgi_params
+sbin/php-fpm	php-fpm.conf
