@@ -1,0 +1,44 @@
+" !!! Do NOT modify this file !!!
+" !!! Do NOT modify this file !!!
+" !!! Do NOT modify this file !!!
+set nocompatible
+set fileencodings=utf-8,gbk,gb2312,ucs-bom,chinese,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+set encoding=utf-8
+set termencoding=&encoding
+set fileformats=unix
+set display=lastline
+
+set runtimepath+=~/.vim/vim-php-doc
+set runtimepath+="/home/work/pangyt/pkg/vim-php-manual/doc/"
+
+set viewoptions=cursor,folds
+set viewdir=~/.vimview
+au BufWinLeave * if bufname("%") != "" | mkview
+au BufWinEnter * if bufname("%") != "" | silent loadview
+au BufNewFile  *.c 0 r  ~/.mytemplate/pytonic
+au BufNewFile  *.h 0 r  ~/.mytemplate/pytonic
+au BufNewFile  *.cpp 0 r  ~/.mytemplate/pytonic
+
+let mapleader = ","
+nmap <leader>w :w!<cr> 
+nmap <leader>r :!/home/work/php/bin/php %<cr>
+nmap <leader>l :!/home/work/php/bin/php -ln %<cr>
+nmap <leader>q :q!<cr>
+set incsearch
+set hlsearch
+set autoindent
+set smartindent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set nu
+set list
+set listchars=tab:>-,trail:-
+set paste
+au BufNewFile,Bufread *.ros,*.inc,*.php set keywordprg=":help"
+
+filetype on
+syntax on
+
+let Tlist_Ctags_cmd="/usr/bin/ctags"
+let Tlist_Inc_Winwidth=0
