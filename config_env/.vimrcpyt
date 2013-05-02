@@ -1,6 +1,7 @@
 " !!! Do NOT modify this file !!!
 " !!! Do NOT modify this file !!!
 " !!! Do NOT modify this file !!!
+set backspace=indent,eol,start
 set nocompatible
 set fileencodings=utf-8,gbk,gb2312,ucs-bom,chinese,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 set encoding=utf-8
