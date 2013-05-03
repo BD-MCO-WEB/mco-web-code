@@ -20,6 +20,8 @@
 #define PHP_YAC_H
 
 extern zend_module_entry yac_module_entry;
+//extern : 用在函数和变量的声明前面，表示此变量/函数是在别处定义的，要在此处引用。
+
 #define phpext_yac_ptr &yac_module_entry
 
 #ifdef PHP_WIN32
