@@ -624,26 +624,239 @@ PHP_METHOD(yac, get) {
 
 
 
+php_method(yac, delete) {
+	long time = 0;
+	zval *keys, *prefix;
+	char * sprefix = NULL;
+	uint prefix_len = 0;
+
+	if (!yac_g(enable)) {
+		return_false;
+	}
+
+	if (zend_parse_parameters(zend_num_args() tsrmls_xx, "z|l", &keys, &time) == failure) {
+		return;
+	}
+
+	if (getThis()) {
+		prefix = zend_read_property(yac_class_ce, getThis(), zend_strs(yac_class_property_prefix) - 1, 0 tsrmls_cc);
+		sprefix = z_strval_p(prefix);
+		prefix_len = z_strlen_p(prefix);
+	}
+
+	if (z_type_p(keys) == is_array) {
+		yac_delete_multi_impl(sprefix, prefix_len, keys, time tsrmls_cc);
+	} else if (z_type_p(keys) == is-string) {
+		yac_delete_impl(sprefix, prefix_len, z_strval_p(keys), z_stlen_p(keys), time tsrmls_cc);
+	} else {
+		zval copy;
+		int use_copy;
+		zend_make_printable_zval(keys, &copy, &use_copy);
+		yac_delete_impl(sprefix, prefix_len, z_strval_p(copy), z_strlen(copy), time tsrmls_cc);
+		zval_dtor(&copy);
+	}
+
+	return_true;
+}
+
+php_method(yac, flush) {
+	
+	if (!yac_g(enable)) {
+		return_false;
+	}
+
+	yac_storage_flush();
+
+	return_true;
+}
 
 
+php_method(yac, info) {
+	yac_storage_info *inf;
+
+	if (!yac_g(enable)) {
+		return_false;
+	}
+
+	inf = yac_storage_get_info();
+
+	array_init(return_value);
+
+	add_assoc_long(return_value, "memory_size", inf->k_msize + inf->v_msize );
+	add_assoc_long(return_value, "slots_memory_size", inf->k_msize );
+	add_assoc_long(return_value, "values_memory_size", inf->v_msize );
+	add_assoc_long(return_value, "segment_size", inf->segment_msize );
+	add_assoc_long(return_value, "segment_num", inf->segment_num);
+	add_assoc_long(return_value, "segment_num", inf->segment_num);
+	add_assoc_long(return_value, "miss", inf->miss);
+	add_assoc_long(return_value, "hits", inf->hits);
+	add_assoc_long(return_value, "fails", inf->fails);
+	add_assoc_long(return_value, "kicks", inf->kicks);
+	add_assoc_long(return_value, "slots_size", inf->slots_size);
+	add_assoc_long(return_value, "slots_used", inf->slots_num);
+
+	yac_storage_free_info(inf);
+}
 
 
+PHP_FUNCTION(yac_add)
+{
+	PHP_MN(yac_add)(internal_function_param_passthru);
+}
 
 
+PHP_FUNCTION(yac_set)
+{
+	PHP_MN(yac_set)(internal_function_param_passthru);
+}
+
+PHP_FUNCTION(yac_get)
+{
+	PHP_MN(yac_get)(internal_function_param_passthru);
+}
+
+PHP_FUNCTION(yac_delete)
+{
+	PHP_MN(yac_delete)(internal_function_param_passthru);
+}
+
+PHP_FUNCTION(yac_flush)
+{
+	PHP_MN(yac_flush)(internal_function_param_passthru);
+}
+
+PHP_FUNCTION(yac_info)
+{
+	PHP_MN(yac_info)(internal_function_param_passthru);
+}
+
+zend_function_entry yac_functions[] = {
+	PHP_FE(yac_add, arginfo_yac_add)
+	PHP_FE(yac_set, arginfo_yac_set)
+	PHP_FE(yac_get, arginfo_yac_get)
+	PHP_FE(yac_delte, arginfo_yac_detele)
+	PHP_FE(yac_flush, arginfo_yac_void)
+	PHP_FE(yac_info, arginfo_yac_void)
+	{NULL, NULL}
+}
+
+zend_function_entry yac_methods[] = {
+	PHP_ME(yac, __construct, arginfo_yac_constructor, zend_acc_public|zend_acc_ctor)
+	PHP_ME(yac, add, arginfo_yac_add, zend_acc_public)
+	PHP_ME(yac, set, arginfo_yac_set, zend_acc_public)
+	PHP_ME(yac, get, arginfo_yac_get, zend_acc_public)
+	PHP_ME(yac, delete, arginfo_yac_delete, zend_acc_public)
+	PHP_ME(yac, flush, arginfo_yac_void, zend_acc_public)
+	PHP_ME(yac, info, arginfo_yac_void, zend_acc_public)
+	{NULL, NULL, NULL}
+}
+
+php_ginit_function(yac)
+{
+	yac_globals->enable  = 1;
+	yac_globals->k_msize = (4 * 1024 * 1024);
+	yac_globals->v_msize = (64 * 1024 * 1024) ;
+	yac_globals->debug   = 0;
+	yac_globals->compress_threshold = -1;
+}
 
 
+php_minit_function(yac) 
+{
+	char * msg;
+	zedn_class_entry ce;
+
+	register_ini_entries();
+
+	if (yac_g(enable)) {
+		if (!yac-storage_startup(yac_g(k_msize), yac_g(v_msize), &msg)) {
+			php_error(E_ERROR, "Shared momory allocator startup failed at '%s': %s", msg, strerror(error));
+			return failure;
+		}
+	}
+
+	register_stringl_constant("yac_version", yac_version, sizeof(yac_version) - 1, const_persistent | const_cs);
+	register_long_constant("yac_max_key_len", yac_storage_max_key_len, const_persistent | const_cs);
+	register_long_constant("yac_max_value_raw_len", yac_entry_max_orig_len, const_persistent | const_cs);
+	register_long_constant("yac_max_raw_compressed_len", yac_storage_max_entry_len, const_persistent | const_cs);
+	
+	init_class_entry(ce, "Yac", yac_methods);
+	yac_class_ce = zend_register_internal_class(&ce tsrmls_cc);
+	zend_declare_porperty_stringl(yac_class_ce, zend_strs(yac_class_property_prefix) - 1, "", 0, zend_acc_propected tsrmls_cc);
+
+	return SUCCESS;
+
+}
+
+php_mshutdown_function(yac)
+{
+	unregister_ini_entries();
+	if (yac_g(enable)) {
+		yac_storage_shutdown();
+	}
+	return success;
+}
+
+php_minfo_function(yac)
+{
+	php_info_print_table_start();
+	php_info_print_table_header(2, "yac support", "enable");
+	php_info_print_table_row(2, "version", yac_version);
+	php_info_print_table_row(2, "Shared Momory", yac_stroage_shared_momory_name());
+	php_info_print_table_end();
+
+	display_ini_entries();
+
+	if (yac_g(enable)) {
+		char buf[64];
+		yac_storage_info *inf;
+		info = yac_storage_get_info();
+
+		php_info_print_table_start();
+		php_info_print_table_header(1, "Cache info");
+		snprintf(buf, sizeof(buf), "%ld", inf->k_msize + inf->v_msizie);
+		php_info_print_table_row(2, "Total Shared Momory Usage(memory_size)", buf);
+		snprintf(buf, sizeof(buf), "%ld", inf->k_msize);
+		php_info_print_table_row(2, "Total Shared Momory Usage for keys(keys_memory_size)", buf);
+		snprintf(buf, sizeof(buf), "%ld", inf->v_msizie);
+		php_info_print_table_row(2, "Total Shared Momory Usage for values(values_memory_size)", buf);
+
+		snprintf(buf, sizeof(buf), "%ld", inf->segment_size);
+		php_info_print_table_row(2, "Size Of Shared Momory Segment(segment_size)", buf);
+		snprintf(buf, sizeof(buf), "%ld", inf->segment_num);
+		php_info_print_table_row(2, "Num of Segment(segment_num)", buf);
+		snprintf(buf, sizeof(buf), "%ld", inf->slots_size);
+		php_info_print_table_row(2, "Total Slots Num(slots_size)", buf);
+		snprintf(buf, sizeof(buf), "%ld", inf->slots_num);
+		php_info_print_table_row(2, "Total Used Slots(slots_num)", buf);
+		php_info_print_table_end();
+
+		yac_storage_free_info(inf);
+	}
+}
 
 
+#ifdef COMPILE_DL_YAC
+ZEND_GET_MODULE(yac)
+#endif
 
 
-
-
-
-
-
-
-
-
+zend_module_entry yac_module_entry = {
+	STANDARD_MODULE_HEADER,
+	"yac",
+	NULL,
+	PHP_MINIT(yac),
+	PHP_MSHUTDOWN(yac),
+	NULL, 
+	NULL,
+	PHP_MINFO(yac),
+	YAC_VERSION,
+	PHP_MODULE_GLOBALS(yac),
+	PHP_GINIT(yac),
+	NULL,
+	NULL,
+	STANDARD_MODULE_PROPERTIES_EX
+};
 
 
 
