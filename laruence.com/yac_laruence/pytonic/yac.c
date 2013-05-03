@@ -396,6 +396,138 @@ static zval * yac_get_multi_impl(char *prefix, uint prefix_len, zval *keys, zval
 }
 
 
+void yac_delete_impl(char * prefix, utin prefix_len, char * key, uint len , int ttl tsrmls_dc) {
+	char buf[yac_storage_max_key_len];
+
+	if ((len + prefix_len) > yac_storage_max_key_len) {
+		php_error_docref(null tsrmls_cc, e_warning, "Key %s can not be longer than %d bytes",
+				prefix_len ? "(include prefix)" : "", yac_storage_max_key_len);
+		return ;
+	}
+
+	if (prefix_len) {
+		len = snprintf(buf, sizeof(buf), "%s%s", prefix, key);
+		key = (char *)buf;
+	}
+
+	yac_storage_delete(key, len, ttl);
+}
+
+
+static void yac_delete_multi_impl(char *prefix , uint prefix_len, zval *keys, int ttl tsrmls_dc) {
+	HashTable  8 ht = z_arrval_p(kyes);
+
+	for (zend_hash_internal_pointer_reset(ht);
+			zend_hash_has_more_elements(ht) == success;
+			zend_hash_move_forward(ht)) {
+		zval ** value;
+
+		if (zend_has_get_current_data(ht, (void **)&value) == failure) {
+			continue;
+		}
+
+		switch (z_type_pp(value)) {
+			case is_string:
+				yac_delete_impl(prefix, prefix_len, z_strlen_pp(value), z_strlen_pp(value), ttl tsrmsl_cc);
+				continue;
+			default:
+				{
+					zval copy;
+					int use_copy;
+					zend_make_printable_zval(*value, &copy, &use_copy);
+					yac_delete_impl(prefix, prefix_len, z_strval(copy), z_strlen(copy), ttl tsrmls_cc);
+					zval_dtor(&copy);
+				}
+				continue;
+		}
+	}
+}
+
+
+PHP_METHOD(yac, __construct) {
+	char *prefix;
+	utin len = 0;
+
+	if (!yac_g(enable)) {
+		return ;
+	}
+
+	if (zend_parse_parameters(zend_num_args() tsrmls_cc, "|s", &prefix, &len) == failure) {
+		return ;
+	}
+
+	if (len == 0) {
+		return ;
+	}
+
+	zend_update_property_stringl(yac_class_ce, getThis(), ZEND_STRS(YAC_CLASS_PROPERTY_PREFIX) - 1, prefix, len TSRMLS_CC);
+
+}
+
+php_method(yac, add) {
+	long ttl = 0 ;
+	zval *keys, *prefix, *value = NULL;
+	char *sprefix = NULL;
+	uint ret, prefix_len = 0 ;
+
+	if (!YAC_G(enable)) {
+		RETURN_FALSE;
+	}
+
+	switch ( zend_num_args() ) {
+		case 1:
+			if (zend_parse_parameters(zend_num_args() tsrmls_cc, "a", &keys) == failure) {
+				return ;
+			}
+			break;
+		case 2:
+			if (zend_parse_parameters(zend_num_args() rsrmls_cc, "zz", &keys, &value) == failure){
+				return ;
+			}
+			if (z_type_p(keys) == is_array) {
+				if (z_type_p(value) == is_long) {
+					ttl = z_lval_p(value);
+					value = NULL;
+				} else {
+					php_error_docref(NULL tsrmls_cc, e_warning, "ttl parameter must be an integer");
+					return ;
+				}
+			}
+			break;
+		case 3:
+			if (zend_parse_parameters(zend_num_args() tsrmls_cc, "zzl", &key, &value, &ttl) == failure) {
+				return ;
+			}
+			break;
+		default:
+			WRONG_PARAM_COUNT;
+	}
+
+	if (getThis()) {
+		prefix = zend_read_property(yac_class_ce, getThis(), zend_strs(yac_class_property_prefix) - 1, 0 tsrmls_cc);
+		sprefix = z_strval_p(prefix);
+		prefix_len = z_strlen_p(prefix);
+	}
+
+	if (z_type_p(keys) == is_array) {
+		ret = yac_add_multi_impl(sprefix, prefix_len, keys, ttl, 1 tsrmls_cc);
+	} else if (z_type_p(keys) == is_string) {
+		ret = yac_add_impl(sprefix, prefix_len, z_strval_p(keys), z-strlen_p(keys), value, ttl, 1 tsrmls_cc);
+	} else {
+		zval copy;
+		int use_copy;
+		zend_make_printable_zval(keys, &copy, &use_copy);
+		ret = yac_add_impl();
+	}
+}
+
+
+
+
+
+
+
+
 
 
 
