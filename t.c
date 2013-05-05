@@ -18,7 +18,13 @@
 
 #include <stdio.h>
 
+#include "pytonic.h"
+//extern int e_pytonic;
+
+int p; // 这是声明 还是 定义？
+
 int function1();
+extern int ccc;
 int main(){
 	char a[10]="abcdefghij";
 	char *p = &a[1];
@@ -30,13 +36,25 @@ int main(){
 
 	int b = function1();
 	printf("function1:%d \n", b);
-	return b;
+	b = function1();
+	printf("function1:%d \n", b);
+	b = function1();
+	printf("function1:%d \n", b);
+
+	printf("ccc:%d \n", ccc);
+
+	printf("pytonic%d \n", pytonic);
+	printf("e_pytonic%d \n", e_pytonic);
+//	printf("s_pytonic%d \n", s_pytonic);
+	return 0;
 }
+
+int ccc=90;
 
 int function1(){
 	static int a=100;
 	if(1) {
-		int a=200;
+		a++;
 	}
 	return a;
 }
