@@ -1,0 +1,130 @@
+============ autotools ============
+aclocal
+autoscan
+autoconf
+autoheader
+automake
+==================================
+autoscan
+vim configure.ac
+
+autoconf
+vim configure.ac
+
+aclocal
+autoconf
+automake
+
+vim Makefile.am
+automake
+
+vim configure.ac
+automake --add-missing
+
+autoheader
+touch NEWS README AUTHORS ChangeLog
+
+autoconf
+automake
+./configure
+make
+
+vim Makefile.am
+
+autoconf 
+automake
+./configure
+make 
+
+============================
+AutoTools 傻瓜入门
+学习GNU／LINUX开发的编程人员，上手之后不久就会在编译开源软件的时候碰到configure脚本,过段时间还会知道configure脚本是autoconf生成的；但是真正想用起来autoconf,却是要弄明白config.h,configure.in,Makfile.am等一大堆的文件，这可能要花些功夫。让我们从一个例子开始，争取为大家省点力气。
+ 我们用个小程序作例子，计算一个整数的开方，建个工作目录：sqrt。程序很简单：
+ #include<stdio.h>
+ #include<math.h>
+ int main()
+ {
+  int i=0;
+  scanf("%d",&i);
+  printf("sqrt(%d)=%f\n",i,sqrt(i));
+ }
+ 接下来我们要编译这个程序：
+ $cc -X -lm -o sqrt sqrt.c
+ 因为我们使用了数学库，所以要给链接器传递一个参数-lm。
+ 程序就完成了。
+ 我们想专业一点，给这个程序增加Make文件，不用再输入那么长的命令，同时还想让这个程序成为可移植的程序。这个时候，我们就需要用到autotools了。
+ autotools包含了几个部分，最常用到的是autoconf和automake。
+ 我们先加入autoconf。
+ autoconf需要一个configure.ac文件，幸运的是，我们不需要自己写这个文件，我们可以使用autoscan来生成这个文件。执行autoscan。
+ $autoscan
+autom4te: configure.ac: no such file or directory
+autoscan: /usr/bin/autom4te failed with exit status: 1
+错误信息先不用管，目录下多了几个文件： autoscan.log  configure.scan。我们要关心的是configure.scan,这是一个原始版本的configure.ac。打开这个文件，把下面这一行修改一下：
+ AC_INIT(FULL-PACKAGE-NAME, VERSION, BUG-REPORT-ADDRESS)
+ 改成
+ AC_INIT([sqrt], [0.1.0], [you@mail.address])
+参数的意思一目了然，不罗嗦了。接下来将文件另存为：configure.ac。执行：
+ $autoconf
+ 我们看到，目录下又多了一些内容，我们关心的是configure这个脚本文件，执行一下试试吧！
+ 不过现在这个configure还没什么用，要发挥configure的真正目的——识别编译环境，配置编译选项的话，还要进行一些操作。
+首先编辑configure.ac文件，在我们之前改动的AC_INIT...一行下面，加入如下一行内容：
+AM_INIT_AUTOMAKE 
+再执行一次autoconf试试？很不幸，我们遇到了错误：
+configure.ac:6: error: possibly undefined macro: AM_INIT_AUTOMAKE...
+因为找不到AM_INIT_AUTOMAKE宏，不要担心，因为我们少做了一步，先要把这些宏生成一下，当然是自动的。
+$aclocal
+$autoconf
+现在的autoconf没有报错。这个时候再看看目录下面，发现多了一个aclocal.m4文件，这就是aclocal声称的宏命令文件，autoconf会使用它来生成新的configure脚本。
+ 是不是现在就能够自动搞定Makefile了？我们现在再执行一下configure,看看输出：
+ configure: error: cannot find install-sh or install.sh in . ./.. ./../..
+ 和我们想的有点不同，我们还要用到automake命令做一些其它的事情，我们先执行一下：
+ $automake
+ configure.ac: required file `./install-sh' not found
+ configure.ac: required file `./missing' not found
+ automake: no `Makefile.am' found for any configure output
+ 我们注意到最后一行，知道了还需要一个`Makefile.am`文件，这个文件我们要写一下，编辑一个文件，增加：
+ bin_PROGRAMS = sqrt
+ sqrt_SOURCES = sqrt.c
+ sqrt_LDADD = $(LIBOJBS)
+ 执行automake试试？
+ configure.ac: required file `./install-sh' not found
+configure.ac: required file `./missing' not found
+automake: no `Makefile.am' found for any configure output
+automake: Did you forget AC_CONFIG_FILES([Makefile]) in configure.ac?
+ 哦，不行，还要install-sh,missing文件，错误信息中，还提到AC_CONFIG_FILES([Makefile]),是的，我们还要修改一下configure.ac,在最后一行AC_OUTPUT前面增加一行：
+ AC_CONFIG_FILES([Makefile])
+ 现在再执行一次automake吧，但是我们要加一个参数：
+ $automake --add-missing
+ configure.ac: installing `./install-sh'
+ configure.ac: installing `./missing'
+ Makefile.am: installing `./INSTALL'
+ Makefile.am: required file `./NEWS' not found
+ Makefile.am: required file `./README' not found
+ Makefile.am: required file `./AUTHORS' not found
+ Makefile.am: required file `./ChangeLog' not found
+ Makefile.am: installing `./COPYING'
+ configure.ac:8: required file `config.h.in' not found
+ 前面缺的四个文件简单，我们按照自己的情况编辑保存即可，config.h.in从哪里来呢？ 现在让我们把config.h.in搞出来，这个要用到autoheader，我们执行命令：
+ $autoheader
+ config.h.in文件就生成好了。准备好了其它几个文本文件，我们再执行一次，这次不用加参数了,不过我们还要再执行一次autoconf，因为我们修改了configure.ac之后还没有执行过autoconf。
+ $autoconf
+ $automake
+ 我们再执行一次./configure:
+ $./configure
+ ...
+ config.status: creating Makefile
+ config.status: creating config.h
+ ...
+ 让我们执行一下make吧。
+ $make
+ ...
+ /home/nevernew/sqrt/sqrt.c:7: undefined reference to `sqrt'
+ ...
+ 是因为我们没有把数学库加入链接，修改Makefile.am,将对应行修改为：
+ sqrt_LDADD = $(LIBOBJS) -lm
+ 更新一下文件：
+ $autoconf
+ $automake
+ $./configure
+ $make
+ $./sqrt
