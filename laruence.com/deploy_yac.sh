@@ -2,7 +2,7 @@
 # modify yac source code , and deploy it !
 # pytonic@foxmail.com
 
-cd $(pwd)/yac/
+cd $(pwd)/modify_yac/
 
 make clean ;
 ./configure --enable-yac --with-php-config=/home/work/php/bin/php-config 
