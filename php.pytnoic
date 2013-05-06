@@ -1,7 +1,19 @@
+****** Grok:神交 
+
 太多描述不严谨的解释，他们会造成理解上的误导。
 
 如何问问题？问合适的问题可以高效，直指核心！
 
+琢磨的时候要带上或者不带上过去的经验，要让过去的经验起到/不起到作用。
+
+语法 功能 当前场景 外层场景 计算机网络 计算机本质
+
+*********
+fd  file  fileOperator 
+设备 回调函数 内核 等待队列 进程挂载 信号 
+poll掩码 
+
+***************
 bin/php		php.ini
 bin/php-cgi	fastcgi_params
 sbin/php-fpm	php-fpm.conf
@@ -9,9 +21,13 @@ sbin/php-fpm	php-fpm.conf
 fastcgi_param: 参考文档
 http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_param
 
+
+
 ****** 搭建nginx和fastcgi php
 nginx nginx.conf fastcgi.conf 
 php  php-fpm php-fpm.conf  php-fpm -D 
+
+
 
 ****** cgi.fix_phpinfo
 PATH_INFO：脚本可以由他们的虚拟路径名来访问，在这个路径的末尾附带额外的信息(即PHP_INFO)。
@@ -25,8 +41,6 @@ SCRIPT_FILENAME:
   ["SCRIPT_FILENAME"]=> string(44) "/usr/local/Cellar/nginx/1.4.0/html/index.php"
 QUERY_STRING ：在引用脚本的URL中紧跟在？之后的信息.
   
-
-****** Grok:神交 
 
 
 
