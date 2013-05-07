@@ -118,8 +118,44 @@ static struct taint_overridden_fucs /* {{{ */ {
 static void php_taint_mark_strings(zval *symbol_table TSRMLS_DC) /* {{{ */ {
 	zval **ppzval;
 	HashTable * ht = Z_ARRVAL_P(symbol_table);
+	HashPosition pos = {0};
+
+	for (zend_hash_internal_pointer_reset_ex(ht, &pos);
+			zend_hash_has_more_elements_ex(ht, &pos) == SUCCESS;
+			zend_hash_move_forward_ex(ht, &pos)) {
+		if (zend_hash_get_current_data_ex(ht, (void **)&ppzval, &pos) == FAILURE) {
+			continue;
+		}
+
+		if (z_type_pp(ppzval) == IS_ARRAY) {
+			php_taint_mark_strings(*ppzval TSRMLS_CC);
+		} else if (IS_STRING == Z_TYPE_P(ppzval)) {
+			Z_STRVAL_P(ppzval) = erealloc(Z_STRVAL_P(ppzval), Z_STRLEN_PP(ppzval) + 1 + PHP_TAINT_MAGIC_LENGTH);
+			PHP_TAINT_MARK(*ppzval, PHP_TAINT_MAGIC_POSSIBLE);
+		}
+	}
 }
 
+/*}}}*/
+
+static void taint_pzval_unlock_func (zval *z, taint_free_op *should_free, int unref) /* {{{ */ {
+	if (!Z_DELREF_P(z)) {
+		Z_SET_REFCOUNT_P(z, 1);
+		Z_UNSET_ISREF_P(z);
+		should_free->var = z;
+	} else {
+		should_free->var = 0;
+		if (unref && Z_ISREF_P(z) && Z_REFCOUNT_P(z) == 1) {
+			should_ref->is_ref = 1;
+			Z_UNSET_ISREF_P(z);
+		}
+	}
+}
+/*}}}*/
+
+static void taint_pzval_unlock_free_func(zval *z) /* {{{ */{
+	if (!) {}
+}
 
 /*
  * Local variables:
@@ -129,3 +165,4 @@ static void php_taint_mark_strings(zval *symbol_table TSRMLS_DC) /* {{{ */ {
  * vim600: noet sw=4 ts=4 fdm=marker
  * vim<600: noet sw=4 ts=4
  */
+
