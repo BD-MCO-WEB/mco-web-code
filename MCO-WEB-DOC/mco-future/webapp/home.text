@@ -1,0 +1,278 @@
+% webapp技术实践
+% pytonic <pangyongtao@baidu.com> (lead)
+% 2012-09-17
+以[caniuse](http://caniuse.com/#index)为参考，依次实现这些技术点，并给出自己的看法
+
+#HTML5
+##Audio element(李海顿)
+[document](other.text)
+
+##Canvas (basic support) (吴俊 时永欣)
+[document](other.text)
+
+
+##Color input type(逄永涛)
+[示例代码](http://dbl-wise-ttrd23.vm.baidu.com:8999/color_input_type.html)
+[详细介绍](html5/color-input-type.text)
+
+
+##contenteditable attribute (basic support) (张国强)
+[document](other.text)
+
+##Datalist element
+[document](other.text)
+
+##dataset & data-* attributes
+[document](other.text)
+
+##Date/time input types
+[document](other.text)
+
+##Details & Summary elements
+[document](other.text)
+
+##Drag and Drop
+[document](other.text)
+
+##Form validation
+[document](other.text)
+
+##HTML5 form features
+[document](other.text)
+
+##input placeholder attribute(刘元方)
+[document](other.text)
+
+
+##New semantic elements
+[document](other.text)
+
+##Number input type
+[document](other.text)
+
+##Offline web applications（鲁彦 刘元方）
+[document](other.text)
+
+
+##Progress & Meter
+[document](other.text)
+
+##Range input type
+[document](other.text)
+
+##Ruby annotation
+[document](other.text)
+
+##sandbox attribute for iframes
+[document](other.text)
+
+##Session history management
+[document](other.text)
+
+##Text API for Canvas
+[document](other.text)
+
+
+##Video element（李海顿）
+[document](other.text)
+
+
+
+##WebGL - 3D Canvas graphics(梁冬)
+[document](other.text)
+
+
+
+#JS API
+##Audio API
+[document](other.text)
+
+##Blob URLs
+[document](other.text)
+
+##Cross-document messaging
+[document](other.text)
+
+##Cross-Origin Resource Sharing
+[document](other.text)
+
+##Device Orientation events
+[document](other.text)
+
+##File API
+[document](other.text)
+
+##FileReader API
+[document](other.text)
+
+##Filesystem & FileWriter API
+[document](other.text)
+
+##Geolocation
+[document](other.text)
+
+##getUserMedia/Stream API
+[document](other.text)
+
+##Hashchange event
+[document](other.text)
+
+##IndexedDB
+[document](other.text)
+
+##JSON parsing
+[document](other.text)
+
+##matchesSelector
+[document](other.text)
+
+##matchMedia
+[document](other.text)
+
+##Navigation Timing API
+[document](other.text)
+
+##requestAnimationFrame
+[document](other.text)
+
+##Server-sent DOM events
+[document](other.text)
+
+##Shared Web Workers
+[document](other.text)
+
+##Typed Arrays
+[document](other.text)
+
+##Web Notifications
+[document](other.text)
+
+##Web Sockets
+[document](other.text)
+
+##Web Storage - name/value pairs
+[document](other.text)
+
+##Web Workers（吴俊）
+[document](other.text)
+
+
+##Full Screen API
+[document](other.text)
+
+
+##Web SQL Database
+[document](other.text)
+
+
+##All other JS API features
+[document](other.text)
+
+
+
+
+#CSS
+
+
+## web fonts
+[document](other.text)
+
+##calc() as CSS unit value
+[document](other.text)
+
+##2.1 new selectors
+[document](other.text)
+
+##Counters
+[document](other.text)
+
+##Generated content
+[document](other.text)
+
+##Gradients
+[document](other.text)
+
+##Grid Layout
+[document](other.text)
+
+##Hyphenation
+[document](other.text)
+
+##min/max-width/height
+[document](other.text)
+
+##Repeating Gradients
+[document](other.text)
+
+##resize property
+[document](other.text)
+
+##3D Transforms(时永欣)
+[document](other.text)
+
+##Animation
+[document](other.text)
+
+##Background-image options
+[document](other.text)
+
+##Border images
+[document](other.text)
+
+##Box-shadow
+[document](other.text)
+
+##Box-sizing
+[document](other.text)
+
+##Media Queries
+[document](other.text)
+
+##Multiple backgrounds
+[document](other.text)
+
+##Multiple column layout
+[document](other.text)
+
+##object-fit/object-position
+[document](other.text)
+
+##Text-overflow
+[document](other.text)
+
+##Text-shadow
+[document](other.text)
+
+##Transforms
+[document](other.text)
+
+##Transitions
+[document](other.text)
+
+##Flexible Box Layout Module
+[document](other.text)
+
+##Viewport units: vw, vh, vmin
+[document](other.text)
+
+##Canvas Drawings
+[document](other.text)
+
+##Filter Effects
+[document](other.text)
+
+##Masks
+[document](other.text)
+
+##Reflections
+[document](other.text)
+
+##text-stroke
+[document](other.text)
+
+##pointer-events (for HTML)
+[document](other.text)
+
+
+
+

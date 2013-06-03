@@ -1,0 +1,34 @@
+% 技术文档范例
+% pytonic <pangyongtao@baidu.com> (lead)
+% 2012-09-17
+
+好的技术文档应该具备几个特点：
+1. 格式工整。
+2. 易于理解和学习。
+3. 力求精而非长。
+
+##背景介绍
+
+
+##代码演示
+###代码
+    :::javascript
+
+    // Create a YUI instance and load the 'node' module
+    YUI().use('node', function (Y) {
+    // A function that gives hello world feedback:
+    var helloWorld = function(e) {
+        e.target.setHTML("<p>Hello World!</p>");
+        Y.one('#container').addClass('hello');
+    }
+    ...
+
+###真机效果
+[url](url)
+
+
+###优缺点分析
+
+
+##参考资料
+

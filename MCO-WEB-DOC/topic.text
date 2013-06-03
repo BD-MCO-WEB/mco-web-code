@@ -1,0 +1,80 @@
+% MCO-WEB知识库
+% pytonic <pangyongtao@baidu.com> (lead)
+% 2012-08-31
+
+这是一个神奇的网站，帮助大家建立完整的无线开发技术体系
+
+##知识库是什么
+1. 这里有无线开发相关的一切技术
+2. 这里的技术点，都是经过实践验证
+3. 知识之间互相cross refer，形成一个知识图谱
+
+##知识点编写要求
+1. 格式清晰，分段。
+2. 只写用到的技术点，适当扩展知识点，不能照抄别人的经验，一定是自己验证。
+3. 写完整环境、测试条件等限制。
+4. 步骤完整，尽量不要跳跃式思维。
+
+## 文档样例
+[技术文档格式样例](demo/home.text)
+
+##代码管理
+[windows平台 TortoiseGit](http://blog.csdn.net/zhulinu/article/details/7369596)
+[github指南](http://www.worldhello.net/gotgithub/)
+
+## TOPIC
+[技术改变产品](product-boost/home.text)
+
+[*前沿技术研究*](mco-future/home.text)
+
+[工具与平台](tool/home.text)
+
+[展现引导](display/home.text)
+
+[速度优化](speedy/home.text)
+
+[UI框架](ui-framework/home.text)
+
+[数据宝藏](data-mining/home.text)
+
+
+
+##技术基础
+###终端技术
+1. [浏览器](http://fe.baidu.com/doc/browser/webkit/webkit.text)
+1. [html5]()
+1. [CSS3]()
+1. [JavaScript]()
+1. [切页面]()
+
+
+
+###网络技术
+1. [移动网关]()
+1. [移动运营商]()
+
+
+###服务端技术
+####编程语言
+1. [PHP]()
+1. [shell]()
+1. [python]()
+1. [C/C++]()
+1. [Java]()
+
+
+
+###计算机基础
+1. [编译原理]()
+1. [计算机网络]()
+1. [HTTP/TCPIP]()
+1. [操作系统]()
+1. [算法原理]()
+1. [软件工程]()
+1. [软件测试技术]()
+1. [网络安全]()
+
+
+
+##Adoc帮助文档
+[help](http://fe.baidu.com/doc/help/)

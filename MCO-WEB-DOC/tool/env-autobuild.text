@@ -1,0 +1,27 @@
+% PHP-CGI自动编译工具
+% pytonic <pangyongtao@baidu.com> (lead)
+% 2012-08-31
+
+来自百度移动云的env-autobuild，是一个PHP-CGI自动编译工具。
+
+它能将php及extension的编译过程封装起来，只需一个命令，就能将php整体重新编译。
+
+##Get Started
+[Quick Start] (env-autobuild/start.text) 
+
+[Introduction](env-autobuild/intro.text) 
+
+[Code Examples](env-autobuild/example.text)
+
+##Documentation
+[Guides](env-autobuild/guilds.text) 
+
+[FAQ](env-autobuild/faq.text) 
+
+[Troubleshooting](env-autobuild/troubleshoot.text) 
+
+[Resources](env-autobuild/res.text)
+
+##技术亮点
+[document](env-autobuild/tech.text)
+

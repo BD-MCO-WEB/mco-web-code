@@ -1,0 +1,119 @@
+% env-autobuild入门
+% pytonic <pangyongtao@baidu.com> (lead) ; another<another@baidu.com> (dev)
+%
+
+##部署方式
+部署方式，分为4步：
+
+###创建临时工作目录，并进入。
+例如：cd ~; mkdir -p pytonic/project; cd pytonic/project;
+
+
+###checkout 工具代码，并进入其根目录。
+[svn](Baidu) co https://svn.baidu.com/app/wise/trunk/frontend/env-autobuild;
+
+cd env-autobuild; 
+
+###修改必要的配置文件。
+修改php\_extension\_install/extension\_conf/common.conf中的PHP\_SRC\_SVN和php\_install/default\_conf\_php\_install.conf中的SVN\_TAG，改为app/wise/frontend/phpui/phpsrc 1.0.1.\*的某个分支。
+
+###为脚本增加执行权限
+进入php\_extension\_install或者php\_install，执行chmod a+x \*.sh
+
+###安装依赖工具
+安装[scm\_autobuild.pl]()，到/home/work/autobuild/目录。
+
+###可以开始了
+接下来，即可开始编译安装。
+
+##PHP和扩展共享配置信息
+本工具为PHP编译和扩展编译提供了默认的公共配置，包括：
+
+1. PHP的源代码svn tag 地址。
+
+2. PHP的安装路径。
+
+3. PHP的扩展安装路径。（先写死，再升级为从php.ini文件中提取）
+
+4. PHP配置文件位置。
+
+
+##脚本配置方法
+本说明假设脚本已经部署完成，下述操作的当前目录就是脚本的部署目录，当要新增一个扩展，或者修改原有扩展的部署方式时，参考下述说明。
+
+###扩展分类及其编译
+由于历史原因，百度过去开发的PHP扩展，没有遵守PHP的标准编译方法，而是用自己的build.sh方式，这种方式造成了各个扩展编译方式各异，不利于维护和使用。
+
+现在，公司正在推行标准的PHP扩展的开发方式，详细内容参考《PHP扩展开发规范》。
+
+还有的扩展，由于历史原因，已经不再更新，只有保留的扩展文件。
+
+还是由于历史原因，有的扩展的代码并没有在svn上，所以上述3种扩展都要支持代码在本地的情况。
+
+所以，本脚本支持2\*3种扩展的（编译）安装方法。
+
+###百度风格的PHP扩展
+如果需要编译百度风格的PHP扩展，且其代码在svn上，需要做如下配置：
+
+1. 编辑extension\_conf/ext\_list.sh.conf文件，给数组PHPEXT\_NAME增加新的扩展名。如果是从svn安装，则此名称要与svn中的模块名保持一致，例如php-mcpack。如果是本地安装，则此名称与本地保存目录（相对于当前目录）名称一致。建议按照svn的模块命名风格来命名。
+
+2. 在extension\_conf目录下新建以扩展名命名的shell脚本配置文件，例如php-mcpack.conf。配置文件中设置如下变量：INSTALL\_MODE、EXTENSION\_MODULES、PHP\_EX\_SRC，含义如下所示：
+
+INSTALL\_MODE：2位数字，第一位代表扩展类型：0是百度风格扩展，1是标准规范化的扩展，2是编译好的so文件。第二位是安装方式：0表示代码在svn上，1表示代码在本地目录中。
+
+EXTENSION\_MODULES：扩展名。
+
+PHP\_EX\_SRC：扩展依赖的PHP源码的svn地址，要求根目录下就是php源代码压缩文件，tar.gz格式。
+
+3. 在php\_extension\_install/pre\_worker.sh脚本中，新增函数处理编译依赖问题，函数命名为pre\_${ext\_name}形式，ext\_name即为第1步中指定的扩展名。
+
+如果其代码在本地，则需要做如下操作：
+
+1. 参考extension\_conf/common.conf，将扩展的源代码目录复制到脚本部署目录的LOCAL\_EXTENSION\_DIR子目录的“模块名”目录中，例如：
+
+针对php-mcpack扩展：部署到php\_ext\_dir/php-mcpack/目录下
+2. 扩展的配置文件中INSTALL\_MODE的第二位设置为1。
+
+
+###标准规范的PHP扩展
+对于符合《PHP扩展开发规范》的PHP扩展，需要做的配置同“Baidu风格PHP扩展”基本相同，只需做如下改动：
+
+1. 将INSTALL\_MODE的第一位设置为1。
+
+2. 在扩展的配置文件中，编写CONFIGURE\_STR，指定编译选项。
+
+如果其代码在本地，需要做的配置同“Baidu风格PHP扩展”的本地编译方式一致。
+
+
+###已编译完成的扩展的部署
+如果要部署已经编译的扩展文件，则需要做如下操作：
+
+1. 将扩展文件复制到脚本部署目录下的php\_extension\_install/extension目录下。
+
+2. 设置INSTALL\_MODE的第一位设置为2。
+
+##开始执行
+配置完成后，进入脚本部署根目录下的php\_extension\_install，执行./run.sh，编译安装就会开始执行。
+
+执行过程中的日志记录到当前目录的extension\_install.log，如果出现错误，则查看此日志寻找出错原因。
+
+
+
+##注意点
+###下述名称需要保持一致：
+
+extension\_conf/extlist.sh.conf 里面配置的扩展名字，
+
+本地目录php\_ext\_dir中的代码目录名称
+
+配置文件名称：extension\_conf/${extname}.conf
+
+配置文件中的EXTENSION\_MODULES只是参考意义，无需必须一致。
+
+
+###不是每次都需要全部重编。
+编译PHP：php版本更换，或者需要外部的库放到php目录下（curl）
+
+编译扩展：只编译需要的即可。
+
+

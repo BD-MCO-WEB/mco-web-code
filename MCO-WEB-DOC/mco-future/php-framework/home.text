@@ -1,0 +1,21 @@
+% php框架分析和提炼
+% pytonic <pangyongtao@baidu.com> (lead)
+% 2012-09-17
+研究zendFramework、yii、yaf等等php框架，取其精华，用之~
+
+##zendFramework
+[document](zend.text)
+
+
+##yii
+[document](yii.text)
+
+##yaf
+[document](yaf.text)
+
+##其他
+[document](http://en.wikipedia.org/wiki/Comparison_of_web_application_frameworks)
+
+
+#框架特性点
+##ORM

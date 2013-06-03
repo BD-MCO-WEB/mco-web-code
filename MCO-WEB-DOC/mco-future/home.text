@@ -1,0 +1,114 @@
+% 前沿技术研究小组
+% pytonic <pangyongtao@baidu.com> (lead)
+% 2012-08-31
+
+移动云提供了宽松舒适的技术环境，不在这个环境中快速成长，如何对得起我们聪明的头脑？
+
+那么如何做呢？
+
+有一条路是，有组织有纪律地学习研究最前沿的技术，做出demo，并提出应用建议，通过不同形态，将一些技术应用到产品中；
+
+最终，我们在实践中磨练了技术，扩展了视野，获得了提升；而移动云的产品得到快速发展；
+
+是为双赢:)
+
+#规范标准
+##操作流程
+1. 发邮件报名到pangyongtao@baidu.com，说明兴趣点和自己的时间情况。
+1. 认领一个技术点，*利用业余时间*进行开发。
+1. 提交demo到小组review，大家欣赏一下。
+1. 质量通过后，提交到demo库。
+1. 完善demo的相关文档。
+
+##基本建议
+1. 以统一的[模版]()为基础进行特性添加，配以规范的文档（加强规范性，方便后续重用）
+1. 技术点的每一处可修改的特性，都有demo来展示（加强demo的有效性，技术点研究全面而准确）
+1. 真机测试，并记录下某些机器上的异常情况，拿出来大家讨论确认原因。 
+
+##深层建议
+1. 不止于技术的表层，要深入到本质，读标准，看代码，hackIt
+1. 这里不是项目，是兴趣，好玩的都可以搞，只要你能拉到人陪你一起
+1. 谁能首先提出这个点，并给出靠谱的方案，谁有优先的lead项目的资格
+1. 实现出来的demo，我们会向外推介，争取融合到线上产品中，确实优秀的，也可以新做产品
+
+##真机测试标准
+1. 浏览器：我们当前测试仅考虑自带浏览器、UC、QQ。
+1. 浏览器：QQ浏览器2.4以上，2.4以下；uc7.x，uc8.x；自带浏览器
+1. 覆盖系统：Android 2.1，2.2，2.3，4.0，4.1；ios4、ios5、ios6
+1. 屏幕尺寸：320x240、320x480、540×960、480x800、1024x600
+1. 网络：wifi 3g 2g
+1. Top机型：[百度移动互联网发展趋势报告](http://developer.baidu.com/report)
+
+##借测试机
+1. [地址](http://icafe.baidu.com:8100/jtrac/app/list/CASEWISEMDEVS/)
+
+##代码管理
+1. [浏览DEMO库](http://tt.baidu.com:8999/demos/)
+1. [添加到DEMO库](http://tt.baidu.com:8999/demos/add/)
+1. [Demo库使用入门](http://docs.babel.baidu.com/doc/24437589-3cb8-4e8a-83ef-91e3a8da1273)
+1. [托管到Github](https://github.com/pytonic/bd-mco-web.git)
+1. [Bug跟踪系统--TODO](http://www.mantisbt.org/)
+
+
+##奖励机制
+1. 个人成长和成就感，这恐怕是最重要的了:)
+1. 百度传统的创新奖项评比，每年一次，奖金几千元，能者得之~
+1. 优质的创新，部门有各方面的奖励，绝非忽悠~
+
+##参考代码
+1. [百度云技术布道团队Github](https://github.com/baidu-mco-evangelist/bae-channel-demo-chat-web.git)
+1. [百度云技术布道团队博客](www.baiduyunblog.com)
+
+
+##参考资料
+[移动开发中的坑](http://wiki.babel.baidu.com/twiki/bin/view/MI/Main/WiseTTMobileDevEnv)
+[html5tutorial](http://www.html5tutorial.info)
+[caniuse](http://caniuse.com)
+
+
+##代码开源许可
+BSD 许可证
+
+
+
+
+#基础技术
+## PHP框架分析和提炼
+[HackIt!](php-framework/home.text)
+
+
+## 移动WebApp开发技术
+[HackIt!](webapp/home.text)
+
+
+
+
+#业界开放平台
+##百度移动云开放技术
+[HackIt!](bd-cloud/home.text)
+
+
+## 微博开放平台
+[HackIt!](weibo/home.text)
+
+
+
+## 微信开放平台
+[HackIt!](weixin/home.text)
+
+
+
+## 腾讯开放平台
+[HackIt!](qq/home.text)
+
+
+
+
+
+
+#你还有什么想法？
+告诉我们吧，大家一起搞起
+
+
+
+
